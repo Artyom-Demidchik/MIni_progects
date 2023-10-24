@@ -1,6 +1,6 @@
-menu = {'Drinkables': ['Coffee', 'Tea', 'Juise'],
-        'Bakery': ['Croissant', 'Donut', 'Cake'],
-        'Desserts': ['Ice_cream', 'Tiramisu', 'Marshmallows']}
+menu = {'Drinkables': ['Coffee $1.5', 'Tea $1.2', 'Juise $1.7'],
+        'Bakery': ['Croissant $2.4', 'Donut $2.0', 'Cake $2.5'],
+        'Desserts': ['Ice_cream $3.0', 'Tiramisu $3.5', 'Marshmallows $2.7']}
 selection_menu = {1: menu['Drinkables'],
                   2: menu['Bakery'],
                   3: menu['Desserts']}
@@ -42,10 +42,15 @@ if answer in exceptions[0]:
         answer4 = int(input('Quantity -> '))
         order[position].append(proposed_choice[answer3 - 1])
         answer = input('Something else? -> ')
-        while answer not in exceptions[0] or answer not in exceptions[1]:
+        while answer not in exceptions[0] and answer not in exceptions[1]:
             print('Incorrect answer! Please try again...')
             answer = input('Something else? -> ')
     print('Ok, your order is:')
-    print(order)
+    total = 0
+    for j in range(len(order)):
+        position = j
+        total += float(order[j][position][-3:]) * float(order[j].count(order[j][position]))
+        print(order[j][position][:-5], order[j][position][-4:], 'x', order[j].count(order[j][position]))
+    print('Total', '=', '$' + str(total))
 elif answer in exceptions[1]:
     print('Then we wish you all the best!!! Goodbye')
