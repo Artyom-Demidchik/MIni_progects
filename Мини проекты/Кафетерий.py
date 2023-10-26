@@ -14,10 +14,10 @@ while (answer not in exceptions[0]) and (answer not in exceptions[1]):
     answer = input('Want to place an order? -> ')
     print()
 if answer in exceptions[0]:
+    position = 0
     while answer in exceptions[0]:
         print("Ok, what would you like to order?")
         proposed_choice = []
-        position = 0
         variant = 0
         for i in menu:
             variant += 1
@@ -35,22 +35,29 @@ if answer in exceptions[0]:
             variant += 1
             print(str(variant) + '.', i)
             proposed_choice.append(i)
+        print()
         print('What do you choose?')
         answer3 = int(input('Your choice -> '))
         order.append([proposed_choice[answer3 - 1]])
+        print()
         print('How many?')
         answer4 = int(input('Quantity -> '))
-        order[position].append(proposed_choice[answer3 - 1])
+        for f in range(answer4 - 1):
+            order[position].append(proposed_choice[answer3 - 1])
+        print()
         answer = input('Something else? -> ')
+        print()
+        position += 1
         while answer not in exceptions[0] and answer not in exceptions[1]:
             print('Incorrect answer! Please try again...')
             answer = input('Something else? -> ')
     print('Ok, your order is:')
     total = 0
+    position = 0
     for j in range(len(order)):
-        position = j
-        total += float(order[j][position][-3:]) * float(order[j].count(order[j][position]))
-        print(order[j][position][:-5], order[j][position][-4:], 'x', order[j].count(order[j][position]))
-    print('Total', '=', '$' + str(total))
+        total += float(order[j][0][-3:]) * int(order[j].count(order[j][0]))
+        print(order[j][0][:-5], order[j][0][-4:], 'x', order[j].count(order[j][0]))
+    print()
+    print('Total', '=', '$' + str(round(total, 2)))
 elif answer in exceptions[1]:
     print('Then we wish you all the best!!! Goodbye')
