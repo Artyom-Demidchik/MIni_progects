@@ -76,3 +76,4 @@ while answer in exceptions[0]:
         answer = input('Would you like to add anything? -> ')
         print()
 print('Then we wish you all the best!!! Goodbye')
+print('no')
