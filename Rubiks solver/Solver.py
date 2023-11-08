@@ -99,6 +99,7 @@ def horizontal_spin(r):
 
 
 def search_white_color(side):
+    pass
     for layer in side:
         for color in layer:
             if color == 'w':
