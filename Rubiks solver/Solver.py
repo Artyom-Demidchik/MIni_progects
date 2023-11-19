@@ -1,7 +1,7 @@
 # byyyworrwyybwgbworoobroggborbbrrwggooryobyggwgwybywrgw
 # wwwwwwwwwgggggggggooooooooorrrrrrrrrbbbbbbbbbyyyyyyyyy
-# r - horizontal spins
-# v - vertical spins
+# r - horizontal spins →
+# v - vertical spins ↑
 # R - right side spins
 # L - left side spins
 # F - front side spins
@@ -18,7 +18,7 @@ yellow_side = [[0] * 3 for _ in range(3)]
 cube = [white_side, green_side, orange_side, red_side, blue_side, yellow_side]
 person_scramble = list(input('Enter your scramble -> '))
 
-# Вывод Куба
+# Распределение цветов куба
 for i in range(6):
     for j in range(3):
         for h in range(3):
@@ -158,6 +158,9 @@ def vertical_spin(v):
         rotate_clockwise(cube[3])
         rotate_counterclockwise(cube[2])
         cube[0], cube[1], cube[5], cube[4] = cube[1], cube[5], cube[4], cube[0]
+        for _ in range(2):
+            rotate_clockwise(cube[5])
+            rotate_clockwise(cube[4])
     return cube
 
 
@@ -169,4 +172,16 @@ def search_white_color(side):
                 return
 
 
-print(*vertical_spin(1), sep='\n')
+def print_cube(move):
+    print('               ', cube[0][2])
+    print('               ', cube[0][1])
+    print('               ', cube[0][0])
+    print(cube[2][2], cube[1][2], cube[3][2], cube[4][2])
+    print(cube[2][1], cube[1][1], cube[3][1], cube[4][1])
+    print(cube[2][0], cube[1][0], cube[3][0], cube[4][0])
+    print('               ', cube[5][2])
+    print('               ', cube[5][1])
+    print('               ', cube[5][0])
+
+
+print_cube(vertical_spin(1))
