@@ -1,187 +1,236 @@
 # byyyworrwyybwgbworoobroggborbbrrwggooryobyggwgwybywrgw
 # wwwwwwwwwgggggggggooooooooorrrrrrrrrbbbbbbbbbyyyyyyyyy
-# r - horizontal spins →
-# v - vertical spins ↑
-# R - right side spins
-# L - left side spins
-# F - front side spins
-# B - back side spins
-# U - up side spins
-# D - down side spins
+# hc - horizontal clockwise cube spins →
+# hcc - horizontal counterclockwise cube spins ←
+# vc - vertical clockwise cube spins ↑
+# vcc - vertical counterclockwise cube spins ↓
+# Rc - right side clockwise spins
+# Rcc - right side counterclockwise spins
+# Lc - left side clockwise spins
+# Lcc - left side counterclockwise spins
+# Fc - front side clockwise spins
+# Fcc - front side counterclockwise spins
+# Bc - back side clockwise spins
+# Bcc - back side counterclockwise spins
+# Uc - up side clockwise spins
+# Ucc - up side counterclockwise spins
+# Dc - down side clockwise spins
+# Dcc - down side counterclockwise spins
 
-white_side = [[0] * 3 for _ in range(3)]
-green_side = [[0] * 3 for _ in range(3)]
-orange_side = [[0] * 3 for _ in range(3)]
-red_side = [[0] * 3 for _ in range(3)]
-blue_side = [[0] * 3 for _ in range(3)]
-yellow_side = [[0] * 3 for _ in range(3)]
-cube = [white_side, green_side, orange_side, red_side, blue_side, yellow_side]
-person_scramble = list(input('Enter your scramble -> '))
+class RubiksCube:
+    def __init__(self):
+        self.white_side = [['w'] * 3 for _ in range(3)]
+        self.green_side = [['g'] * 3 for _ in range(3)]
+        self.orange_side = [['o'] * 3 for _ in range(3)]
+        self.red_side = [['r'] * 3 for _ in range(3)]
+        self.blue_side = [['b'] * 3 for _ in range(3)]
+        self.yellow_side = [['y'] * 3 for _ in range(3)]
+        self.cube = [self.white_side, self.green_side, self.orange_side, self.red_side, self.blue_side,
+                     self.yellow_side]
 
-# Распределение цветов куба
-for i in range(6):
-    for j in range(3):
-        for h in range(3):
-            cube[i][j][h] = person_scramble.pop(0)
+    def distribute_colors(self, scramble):
+        # Распределение цветов
+        for i in range(6):
+            for j in range(3):
+                for h in range(3):
+                    self.cube[i][j][h] = scramble.pop(0)
+
+    def rotate_clockwise(self, side):
+        # Поворот стороны по часовой стрелке
+        side[0], side[1], side[2] = [side[0][2], side[1][2], side[2][2]], [side[0][1], side[1][1], side[2][1]], [
+            side[0][0], side[1][0], side[2][0]]
+        return side
+
+    def rotate_counterclockwise(self, side):
+        # Поворот стороны против часовой стрелки
+        side[0], side[1], side[2] = [side[2][0], side[1][0], side[0][0]], [side[2][1], side[1][1], side[0][1]], [
+            side[2][2], side[1][2], side[0][2]]
+        return side
+
+    def horizontal_clockwise_spin(self, hc):
+        # Вращение куба по часовой стрелке →
+        for _ in range(hc):
+            self.rotate_clockwise(self.cube[0])
+            self.rotate_counterclockwise(self.cube[5])
+            self.cube[1], self.cube[2], self.cube[3], self.cube[4] = self.cube[3], self.cube[1], self.cube[4], \
+                self.cube[2]
+        return self.cube
+
+    def horizontal_counterclockwise_spin(self, hcc):
+        # Вращение куба против часовой стрелки ←
+        for _ in range(hcc):
+            self.horizontal_clockwise_spin(3)
+        return self.cube
+
+    def vertical_clockwise_spin(self, vc):
+        # Вращение куба по часовой стрелке ↑
+        for _ in range(vc):
+            self.rotate_clockwise(self.cube[3])
+            self.rotate_counterclockwise(self.cube[2])
+            self.cube[0], self.cube[1], self.cube[5], self.cube[4] = self.cube[1], self.cube[5], self.cube[4], \
+                self.cube[0]
+            for _ in range(2):
+                self.rotate_clockwise(self.cube[5])
+                self.rotate_clockwise(self.cube[4])
+        return self.cube
+
+    def vertical_counterclockwise_spin(self, vcc):
+        # Вращение куба против часовой стрелки ↓
+        for _ in range(vcc):
+            self.vertical_clockwise_spin(3)
+        return self.cube
+
+    def R_clockwise_rotation(self, Rc):
+        # Вращение правой стороны по часовой стрелке
+        for _ in range(Rc):
+            self.rotate_clockwise(self.cube[3])
+            self.cube[0][0][2], self.cube[0][1][2], self.cube[0][2][2], \
+                self.cube[1][0][2], self.cube[1][1][2], self.cube[1][2][2], \
+                self.cube[4][0][0], self.cube[4][1][0], self.cube[4][2][0], \
+                self.cube[5][0][2], self.cube[5][1][2], self.cube[5][2][2] \
+                = \
+                self.cube[1][0][2], self.cube[1][1][2], self.cube[1][2][2], \
+                self.cube[5][0][2], self.cube[5][1][2], self.cube[5][2][2], \
+                self.cube[0][2][2], self.cube[0][1][2], self.cube[0][0][2], \
+                self.cube[4][0][0], self.cube[4][1][0], self.cube[4][2][0]
+        return self.cube
+
+    def R_counterclockwise_rotation(self, Rcc):
+        # Вращение правой стороны против часовой стрелки
+        for _ in range(Rcc):
+            self.R_clockwise_rotation(3)
+        return self.cube
+
+    def L_clockwise_rotation(self, Lc):
+        # Вращение левой стороны по часовой стрелке
+        for _ in range(Lc):
+            self.rotate_clockwise(self.cube[2])
+            self.cube[0][0][0], self.cube[0][1][0], self.cube[0][2][0], \
+                self.cube[1][0][0], self.cube[1][1][0], self.cube[1][2][0], \
+                self.cube[4][0][2], self.cube[4][1][2], self.cube[4][2][2], \
+                self.cube[5][0][0], self.cube[5][1][0], self.cube[5][2][0] \
+                = \
+                self.cube[4][2][2], self.cube[4][1][2], self.cube[4][0][2], \
+                self.cube[0][0][0], self.cube[0][1][0], self.cube[0][2][0], \
+                self.cube[5][2][0], self.cube[5][1][0], self.cube[5][0][0], \
+                self.cube[1][0][0], self.cube[1][1][0], self.cube[1][2][0]
+        return self.cube
+
+    def L_counterclockwise_rotation(self, Lcc):
+        # Вращение левой стороны против часовой стрелки
+        for _ in range(Lcc):
+            self.L_clockwise_rotation(3)
+        return self.cube
+
+    def B_clockwise_rotation(self, Bc):
+        # Вращение задней стороны по часовой стрелке
+        for _ in range(Bc):
+            self.rotate_clockwise(self.cube[4])
+            self.cube[0][2][0], self.cube[0][2][1], self.cube[0][2][2], \
+                self.cube[2][0][0], self.cube[2][1][0], self.cube[2][2][0], \
+                self.cube[3][0][2], self.cube[3][1][2], self.cube[3][2][2], \
+                self.cube[5][0][0], self.cube[5][0][1], self.cube[5][0][2] \
+                = \
+                self.cube[3][2][2], self.cube[3][1][2], self.cube[3][0][2], \
+                self.cube[0][2][0], self.cube[0][2][1], self.cube[0][2][2], \
+                self.cube[5][0][0], self.cube[5][0][1], self.cube[5][0][2], \
+                self.cube[2][2][0], self.cube[2][1][0], self.cube[2][0][0]
+        return self.cube
+
+    def B_counterclockwise_rotation(self, Bcc):
+        # Вращение задней стороны против часовой стрелки
+        for _ in range(Bcc):
+            self.B_clockwise_rotation(3)
+        return self.cube
+
+    def F_clockwise_rotation(self, Fc):
+        # Вращение передней стороны по часовой стрелке
+        for _ in range(Fc):
+            self.rotate_clockwise(self.cube[1])
+            self.cube[0][0][0], self.cube[0][0][1], self.cube[0][0][2], \
+                self.cube[2][0][2], self.cube[2][1][2], self.cube[2][2][2], \
+                self.cube[3][0][0], self.cube[3][1][0], self.cube[3][2][0], \
+                self.cube[5][2][0], self.cube[5][2][1], self.cube[5][2][2] \
+                = \
+                self.cube[2][0][2], self.cube[2][1][2], self.cube[2][2][2], \
+                self.cube[5][2][2], self.cube[5][2][1], self.cube[5][2][0], \
+                self.cube[0][0][2], self.cube[0][0][1], self.cube[0][0][0], \
+                self.cube[3][0][0], self.cube[3][1][0], self.cube[3][2][0]
+        return self.cube
+
+    def F_counterclockwise_rotation(self, Fcc):
+        # Вращение передней стороны против часовой стрелки
+        for _ in range(Fcc):
+            self.F_clockwise_rotation(3)
+        return self.cube
+
+    def U_clockwise_rotation(self, Uc):
+        # Вращение верхней стороны по часовой стрелке
+        for _ in range(Uc):
+            self.rotate_clockwise(self.cube[0])
+            self.cube[1][2], \
+                self.cube[2][2], \
+                self.cube[3][2], \
+                self.cube[4][2] \
+                = \
+                self.cube[3][2], \
+                self.cube[1][2], \
+                self.cube[4][2], \
+                self.cube[2][2]
+        return self.cube
+
+    def U_counterclockwise_rotation(self, Ucc):
+        # Вращение верхней стороны против часовой стрелки
+        for _ in range(Ucc):
+            self.U_clockwise_rotation(3)
+        return self.cube
+
+    def D_clockwise_rotation(self, Dc):
+        # Вращение нижней стороны по часовой стрелке
+        for _ in range(Dc):
+            self.rotate_clockwise(self.cube[5])
+            self.cube[1][0], \
+                self.cube[2][0], \
+                self.cube[3][0], \
+                self.cube[4][0] \
+                = \
+                self.cube[2][0], \
+                self.cube[4][0], \
+                self.cube[1][0], \
+                self.cube[3][0]
+        return self.cube
+
+    def D_counterclockwise_rotation(self, Dcc):
+        # Вращение нижней стороны против часовой стрелки
+        for _ in range(Dcc):
+            self.D_clockwise_rotation(3)
+        return self.cube
+
+    def print_cube(self):
+        # Вывод развертки куба
+        print('               ', self.cube[0][2])
+        print('               ', self.cube[0][1])
+        print('               ', self.cube[0][0])
+        print(self.cube[2][2], self.cube[1][2], self.cube[3][2], self.cube[4][2])
+        print(self.cube[2][1], self.cube[1][1], self.cube[3][1], self.cube[4][1])
+        print(self.cube[2][0], self.cube[1][0], self.cube[3][0], self.cube[4][0])
+        print('               ', self.cube[5][2])
+        print('               ', self.cube[5][1])
+        print('               ', self.cube[5][0])
+        print()
 
 
-def rotate_clockwise(side):
-    # Поворот стороны по часовой стрелке
-    side[0], side[1], side[2] = [side[0][2],
-                                 side[1][2],
-                                 side[2][2]], [side[0][1],
-                                               side[1][1],
-                                               side[2][1]], [side[0][0],
-                                                             side[1][0],
-                                                             side[2][0]]
-    return side
+# Использование:
+cube = RubiksCube()
+cube.distribute_colors(list(input('Enter your scramble -> ')))
+cube.R_counterclockwise_rotation(1)
+cube.L_clockwise_rotation(1)
+cube.U_clockwise_rotation(1)
+cube.D_counterclockwise_rotation(1)
+cube.vertical_clockwise_spin(1)
+cube.U_clockwise_rotation(1)
+cube.D_counterclockwise_rotation(1)
+cube.R_counterclockwise_rotation(1)
+cube.L_clockwise_rotation(1)
 
-
-def rotate_counterclockwise(side):
-    # Поворот стороны против часовой стрелки
-    side[0], side[1], side[2] = [side[2][0],
-                                 side[1][0],
-                                 side[0][0]], [side[2][1],
-                                               side[1][1],
-                                               side[0][1]], [side[2][2],
-                                                             side[1][2],
-                                                             side[0][2]]
-    return side
-
-
-def R_rotation(R):
-    # Вращение правой стороны
-    for _ in range(R):
-        rotate_clockwise(cube[3])
-        cube[0][0][2], cube[0][1][2], cube[0][2][2], \
-            cube[1][0][2], cube[1][1][2], cube[1][2][2], \
-            cube[4][0][0], cube[4][1][0], cube[4][2][0], \
-            cube[5][0][2], cube[5][1][2], cube[5][2][2] \
-            = \
-            cube[1][0][2], cube[1][1][2], cube[1][2][2], \
-            cube[5][0][2], cube[5][1][2], cube[5][2][2], \
-            cube[0][2][2], cube[0][1][2], cube[0][0][2], \
-            cube[4][0][0], cube[4][1][0], cube[4][2][0]
-    return cube
-
-
-def L_rotation(L):
-    # Вращение левой стороны
-    for _ in range(L):
-        rotate_clockwise(cube[2])
-        cube[0][0][0], cube[0][1][0], cube[0][2][0], \
-            cube[1][0][0], cube[1][1][0], cube[1][2][0], \
-            cube[4][0][2], cube[4][1][2], cube[4][2][2], \
-            cube[5][0][0], cube[5][1][0], cube[5][2][0] \
-            = \
-            cube[4][2][2], cube[4][1][2], cube[4][0][2], \
-            cube[0][0][0], cube[0][1][0], cube[0][2][0], \
-            cube[5][2][0], cube[5][1][0], cube[5][0][0], \
-            cube[1][0][0], cube[1][1][0], cube[1][2][0]
-    return cube
-
-
-def B_rotation(B):
-    # Вращение задней стороны
-    for _ in range(B):
-        rotate_clockwise(cube[4])
-        cube[0][2][0], cube[0][2][1], cube[0][2][2], \
-            cube[2][0][0], cube[2][1][0], cube[2][2][0], \
-            cube[3][0][2], cube[3][1][2], cube[3][2][2], \
-            cube[5][0][0], cube[5][0][1], cube[5][0][2] \
-            = \
-            cube[3][2][2], cube[3][1][2], cube[3][0][2], \
-            cube[0][2][0], cube[0][2][1], cube[0][2][2], \
-            cube[5][0][0], cube[5][0][1], cube[5][0][2], \
-            cube[2][2][0], cube[2][1][0], cube[2][0][0]
-    return cube
-
-
-def F_rotation(F):
-    # Вращение передней стороны
-    for _ in range(F):
-        rotate_clockwise(cube[1])
-        cube[0][0][0], cube[0][0][1], cube[0][0][2], \
-            cube[2][0][2], cube[2][1][2], cube[2][2][2], \
-            cube[3][0][0], cube[3][1][0], cube[3][2][0], \
-            cube[5][2][0], cube[5][2][1], cube[5][2][2] \
-            = \
-            cube[2][0][2], cube[2][1][2], cube[2][2][2], \
-            cube[5][2][2], cube[5][2][1], cube[5][2][0], \
-            cube[0][0][2], cube[0][0][1], cube[0][0][0], \
-            cube[3][0][0], cube[3][1][0], cube[3][2][0]
-    return cube
-
-
-def U_rotation(U):
-    # Вращение верхней стороны
-    for _ in range(U):
-        rotate_clockwise(cube[0])
-        cube[1][2], \
-            cube[2][2], \
-            cube[3][2], \
-            cube[4][2] \
-            = \
-            cube[3][2], \
-                cube[1][2], \
-                cube[4][2], \
-                cube[2][2]
-    return cube
-
-
-def D_rotation(D):
-    # Вращение нижней стороны
-    for _ in range(D):
-        rotate_clockwise(cube[5])
-        cube[1][0], \
-            cube[2][0], \
-            cube[3][0], \
-            cube[4][0] \
-            = \
-            cube[2][0], \
-            cube[4][0], \
-            cube[1][0], \
-            cube[3][0]
-    return cube
-
-
-def horizontal_spin(r):
-    for _ in range(r):
-        rotate_clockwise(cube[0])
-        rotate_counterclockwise(cube[5])
-        cube[1], cube[2], cube[3], cube[4] = cube[3], cube[1], cube[4], cube[2]
-    return cube
-
-
-def vertical_spin(v):
-    for _ in range(v):
-        rotate_clockwise(cube[3])
-        rotate_counterclockwise(cube[2])
-        cube[0], cube[1], cube[5], cube[4] = cube[1], cube[5], cube[4], cube[0]
-        for _ in range(2):
-            rotate_clockwise(cube[5])
-            rotate_clockwise(cube[4])
-    return cube
-
-
-def search_white_color(side):
-    pass
-    for layer in side:
-        for color in layer:
-            if color == 'w':
-                return
-
-
-def print_cube(move):
-    print('               ', cube[0][2])
-    print('               ', cube[0][1])
-    print('               ', cube[0][0])
-    print(cube[2][2], cube[1][2], cube[3][2], cube[4][2])
-    print(cube[2][1], cube[1][1], cube[3][1], cube[4][1])
-    print(cube[2][0], cube[1][0], cube[3][0], cube[4][0])
-    print('               ', cube[5][2])
-    print('               ', cube[5][1])
-    print('               ', cube[5][0])
-
-
-print_cube(vertical_spin(1))
+cube.print_cube()
