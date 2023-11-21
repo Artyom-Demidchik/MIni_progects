@@ -220,17 +220,4 @@ class RubiksCube:
         print()
 
 
-# Использование:
-cube = RubiksCube()
-cube.distribute_colors(list(input('Enter your scramble -> ')))
-cube.R_counterclockwise_rotation(1)
-cube.L_clockwise_rotation(1)
-cube.U_clockwise_rotation(1)
-cube.D_counterclockwise_rotation(1)
-cube.vertical_clockwise_spin(1)
-cube.U_clockwise_rotation(1)
-cube.D_counterclockwise_rotation(1)
-cube.R_counterclockwise_rotation(1)
-cube.L_clockwise_rotation(1)
 
-cube.print_cube()
