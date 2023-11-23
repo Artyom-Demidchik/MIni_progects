@@ -35,13 +35,15 @@ class RubiksCube:
                 for h in range(3):
                     self.cube[i][j][h] = scramble.pop(0)
 
-    def rotate_clockwise(self, side):
+    @staticmethod
+    def rotate_clockwise(side):
         # Поворот стороны по часовой стрелке
         side[0], side[1], side[2] = [side[0][2], side[1][2], side[2][2]], [side[0][1], side[1][1], side[2][1]], [
             side[0][0], side[1][0], side[2][0]]
         return side
 
-    def rotate_counterclockwise(self, side):
+    @staticmethod
+    def rotate_counterclockwise(side):
         # Поворот стороны против часовой стрелки
         side[0], side[1], side[2] = [side[2][0], side[1][0], side[0][0]], [side[2][1], side[1][1], side[0][1]], [
             side[2][2], side[1][2], side[0][2]]
@@ -218,6 +220,3 @@ class RubiksCube:
         print('               ', self.cube[5][1])
         print('               ', self.cube[5][0])
         print()
-
-
-
