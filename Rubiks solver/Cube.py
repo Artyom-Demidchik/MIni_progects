@@ -94,7 +94,7 @@ class RubiksCube:
                 self.cube[1][0][2], self.cube[1][1][2], self.cube[1][2][2], \
                 self.cube[5][0][2], self.cube[5][1][2], self.cube[5][2][2], \
                 self.cube[0][2][2], self.cube[0][1][2], self.cube[0][0][2], \
-                self.cube[4][0][0], self.cube[4][1][0], self.cube[4][2][0]
+                self.cube[4][2][0], self.cube[4][1][0], self.cube[4][0][0]
         return self.cube
 
     def R_counterclockwise_rotation(self, Rcc):
