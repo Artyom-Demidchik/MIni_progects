@@ -6,6 +6,8 @@ cube = Cube.RubiksCube()
 cube.distribute_colors(list(input('Enter your scramble -> ')))
 cube.vertical_clockwise_spin(2)
 cube.horizontal_clockwise_spin(2)
+cube.F_counterclockwise_rotation(1)
+cube.L_clockwise_rotation(1)
 cube.print_cube()
 
 white_cross = ['wg', 'wo', 'wb', 'wr']
@@ -611,33 +613,283 @@ def installation_wb():
                 elif cube.cube[1][1][2] != 'b' or cube.cube[3][1][0] != 'w':
                     cube.horizontal_clockwise_spin(1)
 
-    # Проверка F[2][1]:b U[0][1]:w и R[2][1]:b U[1][2]:w
+    # Проверка F[2][1]:b U[0][1]:w
     if cube.cube[1][2][1] == 'b' and cube.cube[0][0][1] == 'w':
         cube.F_clockwise_rotation(2)
         solve_combination.append("F2")
         return cube.cube
-    elif cube.cube[3][2][1] == 'b' and cube.cube[0][1][2] == 'w':
+    elif cube.cube[1][2][1] != 'b' or cube.cube[0][0][1] != 'w':
         cube.U_clockwise_rotation(1)
-        solve_combination.append("U")
+        if cube.cube[1][2][1] == 'b' and cube.cube[0][0][1] == 'w':
+            solve_combination.append("U")
+            cube.F_clockwise_rotation(2)
+            solve_combination.append("F2")
+            return cube.cube
+        elif cube.cube[1][2][1] != 'b' or cube.cube[0][0][1] != 'w':
+            cube.U_clockwise_rotation(1)
+            if cube.cube[1][2][1] == 'b' and cube.cube[0][0][1] == 'w':
+                solve_combination.append("U2")
+                cube.F_clockwise_rotation(2)
+                solve_combination.append("F2")
+                return cube.cube
+            elif cube.cube[1][2][1] != 'b' or cube.cube[0][0][1] != 'w':
+                cube.U_clockwise_rotation(1)
+                if cube.cube[1][2][1] == 'b' and cube.cube[0][0][1] == 'w':
+                    solve_combination.append("U'")
+                    cube.F_clockwise_rotation(2)
+                    solve_combination.append("F2")
+                    return cube.cube
+                elif cube.cube[1][2][1] != 'b' or cube.cube[0][0][1] != 'w':
+                    cube.U_clockwise_rotation(1)
+
+    # Проверка F[2][1]:w U[0][1]:b
+    if cube.cube[1][2][1] == 'w' and cube.cube[0][0][1] == 'b':
+        cube.F_clockwise_rotation(1)
+        solve_combination.append("F")
+        cube.D_clockwise_rotation(1)
+        solve_combination.append("D")
+        cube.R_counterclockwise_rotation(1)
+        solve_combination.append("R'")
+        cube.D_counterclockwise_rotation(1)
+        solve_combination.append("D'")
+        return cube.cube
+    elif cube.cube[1][2][1] != 'w' or cube.cube[0][0][1] != 'b':
+        cube.U_clockwise_rotation(1)
+        if cube.cube[1][2][1] == 'w' and cube.cube[0][0][1] == 'b':
+            solve_combination.append("U")
+            cube.F_clockwise_rotation(1)
+            solve_combination.append("F")
+            cube.D_clockwise_rotation(1)
+            solve_combination.append("D")
+            cube.R_counterclockwise_rotation(1)
+            solve_combination.append("R'")
+            cube.D_counterclockwise_rotation(1)
+            solve_combination.append("D'")
+            return cube.cube
+        elif cube.cube[1][2][1] != 'w' or cube.cube[0][0][1] != 'b':
+            cube.U_clockwise_rotation(1)
+            if cube.cube[1][2][1] == 'w' and cube.cube[0][0][1] == 'b':
+                solve_combination.append("U2")
+                cube.F_clockwise_rotation(1)
+                solve_combination.append("F")
+                cube.D_clockwise_rotation(1)
+                solve_combination.append("D")
+                cube.R_counterclockwise_rotation(1)
+                solve_combination.append("R'")
+                cube.D_counterclockwise_rotation(1)
+                solve_combination.append("D'")
+                return cube.cube
+            elif cube.cube[1][2][1] != 'w' or cube.cube[0][0][1] != 'b':
+                cube.U_clockwise_rotation(1)
+                if cube.cube[1][2][1] == 'w' and cube.cube[0][0][1] == 'b':
+                    solve_combination.append("U'")
+                    cube.F_clockwise_rotation(1)
+                    solve_combination.append("F")
+                    cube.D_clockwise_rotation(1)
+                    solve_combination.append("D")
+                    cube.R_counterclockwise_rotation(1)
+                    solve_combination.append("R'")
+                    cube.D_counterclockwise_rotation(1)
+                    solve_combination.append("D'")
+                    return cube.cube
+                elif cube.cube[1][2][1] != 'w' or cube.cube[0][0][1] != 'b':
+                    cube.U_clockwise_rotation(1)
+
+
+def installation_wr():
+    # Постановка бело-красного ребра
+
+    # Проверка D[2][1]:w F[0][1]:r
+    if cube.cube[5][2][1] == 'w' and cube.cube[1][0][1] == 'r':
+        return cube.cube
+
+    # Проверка D[2][1]:r F[0][1]:w
+    if cube.cube[5][2][1] == 'r' and cube.cube[1][0][1] == 'w':
+        cube.F_counterclockwise_rotation(1)
+        solve_combination.append("F'")
+        cube.D_clockwise_rotation(1)
+        solve_combination.append("D")
+        cube.R_counterclockwise_rotation(1)
+        solve_combination.append("R'")
+        cube.D_counterclockwise_rotation(1)
+        solve_combination.append("D'")
+        return cube.cube
+
+    # Проверка F[1][2]:w R[1][0]:r
+    if cube.cube[1][1][2] == 'w' and cube.cube[3][1][0] == 'r':
+        cube.D_clockwise_rotation(1)
+        solve_combination.append("D")
+        cube.R_counterclockwise_rotation(1)
+        solve_combination.append("R'")
+        cube.D_counterclockwise_rotation(1)
+        solve_combination.append("D'")
+        return cube.cube
+    elif cube.cube[1][1][2] != 'w' or cube.cube[3][1][0] != 'r':
+        cube.horizontal_clockwise_spin(1)
+        if cube.cube[1][1][2] == 'w' and cube.cube[3][1][0] == 'r':
+            solve_combination.append("h")
+            cube.D_clockwise_rotation(2)
+            solve_combination.append("D2")
+            cube.R_counterclockwise_rotation(1)
+            solve_combination.append("R'")
+            cube.D_counterclockwise_rotation(2)
+            solve_combination.append("D'2")
+            cube.horizontal_counterclockwise_spin(1)
+            solve_combination.append("h'")
+            return cube.cube
+        elif cube.cube[1][1][2] != 'w' or cube.cube[3][1][0] != 'r':
+            cube.horizontal_clockwise_spin(1)
+            if cube.cube[1][1][2] == 'w' and cube.cube[3][1][0] == 'r':
+                solve_combination.append("h2")
+                cube.D_counterclockwise_rotation(1)
+                solve_combination.append("D'")
+                cube.R_counterclockwise_rotation(1)
+                solve_combination.append("R'")
+                cube.D_clockwise_rotation(1)
+                solve_combination.append("D")
+                cube.horizontal_counterclockwise_spin(2)
+                solve_combination.append("h'2")
+                return cube.cube
+            elif cube.cube[1][1][2] != 'w' or cube.cube[3][1][0] != 'r':
+                cube.horizontal_clockwise_spin(1)
+                if cube.cube[1][1][2] == 'w' and cube.cube[3][1][0] == 'r':
+                    solve_combination.append("h'")
+                    cube.R_counterclockwise_rotation(1)
+                    solve_combination.append("R'")
+                    cube.horizontal_clockwise_spin(1)
+                    solve_combination.append("h")
+                    return cube.cube
+                elif cube.cube[1][1][2] != 'w' or cube.cube[3][1][0] != 'r':
+                    cube.horizontal_clockwise_spin(1)
+
+    # Проверка F[1][2]:r R[1][0]:w
+    if cube.cube[1][1][2] == 'r' and cube.cube[3][1][0] == 'w':
+        cube.F_clockwise_rotation(1)
+        solve_combination.append("F")
+        return cube.cube
+    elif cube.cube[1][1][2] != 'r' or cube.cube[3][1][0] != 'w':
+        cube.horizontal_clockwise_spin(1)
+        if cube.cube[1][1][2] == 'r' and cube.cube[3][1][0] == 'w':
+            solve_combination.append("h")
+            cube.D_clockwise_rotation(1)
+            solve_combination.append("D")
+            cube.F_clockwise_rotation(1)
+            solve_combination.append("F")
+            cube.D_counterclockwise_rotation(1)
+            solve_combination.append("D'")
+            cube.horizontal_counterclockwise_spin(1)
+            solve_combination.append("h'")
+            return cube.cube
+        elif cube.cube[1][1][2] != 'r' or cube.cube[3][1][0] != 'w':
+            cube.horizontal_clockwise_spin(1)
+            if cube.cube[1][1][2] == 'r' and cube.cube[3][1][0] == 'w':
+                solve_combination.append("h2")
+                cube.D_clockwise_rotation(2)
+                solve_combination.append("D2")
+                cube.F_clockwise_rotation(1)
+                solve_combination.append("F")
+                cube.D_counterclockwise_rotation(2)
+                solve_combination.append("D'2")
+                cube.horizontal_counterclockwise_spin(2)
+                solve_combination.append("h'2")
+                return cube.cube
+            elif cube.cube[1][1][2] != 'r' or cube.cube[3][1][0] != 'w':
+                cube.horizontal_clockwise_spin(1)
+                if cube.cube[1][1][2] == 'r' and cube.cube[3][1][0] == 'w':
+                    solve_combination.append("h'")
+                    cube.F_clockwise_rotation(1)
+                    solve_combination.append("F")
+                    cube.D_clockwise_rotation(1)
+                    solve_combination.append("D")
+                    cube.F_counterclockwise_rotation(1)
+                    solve_combination.append("F'")
+                    cube.horizontal_clockwise_spin(1)
+                    solve_combination.append("h")
+                    return cube.cube
+                elif cube.cube[1][1][2] != 'r' or cube.cube[3][1][0] != 'w':
+                    cube.horizontal_clockwise_spin(1)
+
+    # Проверка F[2][1]:r U[0][1]:w
+    if cube.cube[1][2][1] == 'r' and cube.cube[0][0][1] == 'w':
         cube.F_clockwise_rotation(2)
         solve_combination.append("F2")
         return cube.cube
+    elif cube.cube[1][2][1] != 'r' or cube.cube[0][0][1] != 'w':
+        cube.U_clockwise_rotation(1)
+        if cube.cube[1][2][1] == 'r' and cube.cube[0][0][1] == 'w':
+            solve_combination.append("U")
+            cube.F_clockwise_rotation(2)
+            solve_combination.append("F2")
+            return cube.cube
+        elif cube.cube[1][2][1] != 'r' or cube.cube[0][0][1] != 'w':
+            cube.U_clockwise_rotation(1)
+            if cube.cube[1][2][1] == 'r' and cube.cube[0][0][1] == 'w':
+                solve_combination.append("U2")
+                cube.F_clockwise_rotation(2)
+                solve_combination.append("F2")
+                return cube.cube
+            elif cube.cube[1][2][1] != 'r' or cube.cube[0][0][1] != 'w':
+                cube.U_clockwise_rotation(1)
+                if cube.cube[1][2][1] == 'r' and cube.cube[0][0][1] == 'w':
+                    solve_combination.append("U'")
+                    cube.F_clockwise_rotation(2)
+                    solve_combination.append("F2")
+                    return cube.cube
+                elif cube.cube[1][2][1] != 'r' or cube.cube[0][0][1] != 'w':
+                    cube.U_clockwise_rotation(1)
 
-    # Проверка F[2][1]:w U[0][1]:b и R[2][1]:w U[1][2]:b
-    if cube.cube[1][2][1] == 'w' and cube.cube[0][0][1] == 'b':
-        cube.U_counterclockwise_rotation(1)
-        solve_combination.append("U'")
-        cube.R_counterclockwise_rotation(1)
-        solve_combination.append("R'")
+    # Проверка F[2][1]:w U[0][1]:r
+    if cube.cube[1][2][1] == 'w' and cube.cube[0][0][1] == 'r':
         cube.F_clockwise_rotation(1)
         solve_combination.append("F")
-        return cube.cube
-    elif cube.cube[3][2][1] == 'w' and cube.cube[0][1][2] == 'b':
+        cube.D_clockwise_rotation(1)
+        solve_combination.append("D")
         cube.R_counterclockwise_rotation(1)
         solve_combination.append("R'")
-        cube.F_clockwise_rotation(1)
-        solve_combination.append("F")
+        cube.D_counterclockwise_rotation(1)
+        solve_combination.append("D'")
         return cube.cube
+    elif cube.cube[1][2][1] != 'w' or cube.cube[0][0][1] != 'r':
+        cube.U_clockwise_rotation(1)
+        if cube.cube[1][2][1] == 'w' and cube.cube[0][0][1] == 'r':
+            solve_combination.append("U")
+            cube.F_clockwise_rotation(1)
+            solve_combination.append("F")
+            cube.D_clockwise_rotation(1)
+            solve_combination.append("D")
+            cube.R_counterclockwise_rotation(1)
+            solve_combination.append("R'")
+            cube.D_counterclockwise_rotation(1)
+            solve_combination.append("D'")
+            return cube.cube
+        elif cube.cube[1][2][1] != 'w' or cube.cube[0][0][1] != 'r':
+            cube.U_clockwise_rotation(1)
+            if cube.cube[1][2][1] == 'w' and cube.cube[0][0][1] == 'r':
+                solve_combination.append("U2")
+                cube.F_clockwise_rotation(1)
+                solve_combination.append("F")
+                cube.D_clockwise_rotation(1)
+                solve_combination.append("D")
+                cube.R_counterclockwise_rotation(1)
+                solve_combination.append("R'")
+                cube.D_counterclockwise_rotation(1)
+                solve_combination.append("D'")
+                return cube.cube
+            elif cube.cube[1][2][1] != 'w' or cube.cube[0][0][1] != 'r':
+                cube.U_clockwise_rotation(1)
+                if cube.cube[1][2][1] == 'w' and cube.cube[0][0][1] == 'r':
+                    solve_combination.append("U'")
+                    cube.F_clockwise_rotation(1)
+                    solve_combination.append("F")
+                    cube.D_clockwise_rotation(1)
+                    solve_combination.append("D")
+                    cube.R_counterclockwise_rotation(1)
+                    solve_combination.append("R'")
+                    cube.D_counterclockwise_rotation(1)
+                    solve_combination.append("D'")
+                    return cube.cube
+                elif cube.cube[1][2][1] != 'w' or cube.cube[0][0][1] != 'r':
+                    cube.U_clockwise_rotation(1)
 
 
 installation_wg()
@@ -649,6 +901,10 @@ installation_wo()
 cube.horizontal_clockwise_spin(1)
 solve_combination.append("h")
 installation_wb()
+
+cube.horizontal_clockwise_spin(1)
+solve_combination.append("h")
+installation_wr()
 
 print(solve_combination, end='\n'*2)
 cube.print_cube()
